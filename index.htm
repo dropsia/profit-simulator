@@ -200,6 +200,18 @@ text-align:center;
 font-size:12px;
 color:#64748b;
 }
+  .installButton{
+position:absolute;
+right:110px;
+top:30px;
+background:#2563eb;
+border:none;
+color:white;
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+}
 
 /* LIGHT MODE */
 
@@ -579,7 +591,33 @@ calculate()
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+  let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt",(e)=>{
+
+e.preventDefault();
+
+deferredPrompt = e;
+
+document.getElementById("installBtn").style.display = "inline-block";
+
+});
+
+document.getElementById("installBtn").onclick = async ()=>{
+
+if(!deferredPrompt) return;
+
+deferredPrompt.prompt();
+
+const { outcome } = await deferredPrompt.userChoice;
+
+deferredPrompt = null;
+
+document.getElementById("installBtn").style.display="none";
+
+};
 
 </script>
+  
 
 </body></html>
